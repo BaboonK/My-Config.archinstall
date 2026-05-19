@@ -78,6 +78,21 @@ paru -S colloid-gtk-theme-git \
 cd ~/Public/Builds
 git clone https://github.com/vinceliuice/Colloid-gtk-theme.git
 cd Colloid-gtk-theme
+#在~/.config/niri/config.kdl中添加
+cursor {
+    xcursor-theme "/usr/share/icons/Colloid-dark-cursors"
+    xcursor-size 24
+}
+```
+
+### 主题
+```
+paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
+#~/.config/niri/config.kdl加入如下
+cursor {
+    xcursor-theme "/usr/share/icons/Colloid-dark-cursors"
+    xcursor-size 24
+}
 ```
 
 ## 文件管理器配置
