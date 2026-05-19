@@ -72,27 +72,16 @@ systemctl enable --now --user vicinae.service
 ### gtk主题设置
 ```
 sudo pacman -S nwg-look
-paru -S colloid-gtk-theme-git \
-    colloid-icon-theme-git colloid-cursors-git
-#或者执行安装脚本
-cd ~/Public/Builds
-git clone https://github.com/vinceliuice/Colloid-gtk-theme.git
-cd Colloid-gtk-theme
+paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
 #在~/.config/niri/config.kdl中添加
 cursor {
     xcursor-theme "/usr/share/icons/Colloid-dark-cursors"
     xcursor-size 24
 }
-```
-
-### 主题
-```
-paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
-#~/.config/niri/config.kdl加入如下
-cursor {
-    xcursor-theme "/usr/share/icons/Colloid-dark-cursors"
-    xcursor-size 24
-}
+#或者执行安装脚本
+cd ~/Public/Builds
+git clone https://github.com/vinceliuice/Colloid-gtk-theme.git
+cd Colloid-gtk-theme
 ```
 
 ## 文件管理器配置
