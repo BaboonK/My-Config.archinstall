@@ -23,7 +23,6 @@ git clone https://github.com/zsh-users/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting
 cd ~/.oh-my-zsh/custom/themes
 git clone https://github.com/romkatv/powerlevel10k
-git -C "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k" pull
 ```
 
 ## yazi nvim vscode gemini-cli
