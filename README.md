@@ -19,10 +19,22 @@ sudo pacman -S zsh
 paru -S autojump-git
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 cd ~/.oh-my-zsh/plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting
+git clone -depth 1 https://github.com/zsh-users/zsh-autosuggestions
+git clone -depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
 cd ~/.oh-my-zsh/custom/themes
-git clone https://github.com/romkatv/powerlevel10k
+git clone -depth 1 https://github.com/romkatv/powerlevel10k
+```
+
+### omz国内加速
+```
+git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
+cd ohmyzsh/tools
+REMOTE=https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git sh install.sh
+cd ~/.oh-my-zsh/plugins
+git clone --depth 1 https://gitee.com/mirrors/zsh-autosuggestions.git
+git clone --depth 1 https://gitee.com/mirrors/zsh-syntax-highlighting.git
+cd ~/.oh-my-zsh/custom/themes
+git clone --depth 1 https://gitee.com/romkatv/powerlevel10k.git
 ```
 
 ## yazi nvim vscode gemini-cli
@@ -44,12 +56,13 @@ cd ~/.local/share/nvim/lazy/markdown-preview.nvim
 npm install
 ```
 
-### 应用于root用户
+## clash
 ```
-sudo cp ~/.zshrc ~/.p10k.zsh ~/.vimrc /root
-sudo cp -r ~/.oh-my-zsh/ /root
-su root
-chsh
+git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
+  && cd clash-for-linux-install \
+  && bash install.sh
+clashon
+clashtun on
 ```
 
 ### gemini-cli
