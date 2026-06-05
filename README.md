@@ -56,15 +56,6 @@ cd ~/.local/share/nvim/lazy/markdown-preview.nvim
 npm install
 ```
 
-## clash
-```
-git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
-  && cd clash-for-linux-install \
-  && bash install.sh
-clashon
-clashtun on
-```
-
 ### gemini-cli
 ```
 #安装nvm以更好管理版本
@@ -72,6 +63,15 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.zshrc
 nvm install --lts
 npm install -g @google/gemini-cli
+```
+
+## clash-for-linux-install
+```
+git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
+  && cd clash-for-linux-install \
+  && bash install.sh
+clashon
+clashtun on
 ```
 
 ## 系统UI
