@@ -74,6 +74,13 @@ clashon
 clashtun on
 ```
 
+## adb
+```
+sudo pacman -S android-tools android-udev
+sudo usermod -aG adbusers $USER
+sudo udevadm control --reload-rules && sudo systemctl restart systemd-udevd.service
+```
+
 ## 系统UI
 ```
 paru -S noctalia-shell \
