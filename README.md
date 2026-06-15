@@ -81,6 +81,16 @@ sudo usermod -aG adbusers $USER
 sudo udevadm control --reload-rules && sudo systemctl restart systemd-udevd.service
 ```
 
+## screenshot
+```
+sudo pacman -S grim slurp wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+systemctl --user restart xdg-desktop-portal
+#niri配置
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
+Mod+S { spawn "sh" "-c" "grim -g \"$(slurp)\" - | wl-copy"; }
+```
+
 ## 系统UI
 ```
 paru -S noctalia-shell \
