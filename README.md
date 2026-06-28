@@ -1,7 +1,7 @@
 # archinstall安装系统
 
 
-## 安装日常软件
+## 基本配置
 ```
 sudo pacman -S base-devel git curl \
     noto-fonts-cjk noto-fonts-emoji ttf-hack-nerd ttf-roboto \
@@ -9,9 +9,12 @@ sudo pacman -S base-devel git curl \
 
 git clone https://aur.archlinux.org/paru.git
 cd paru && makepkg -si
-paru -S cherry-studio-electron-bin linuxqq wechat clash-verge-rev-bin
+paru -S cherry-studio-electron-bin clash-verge-rev-bin
 paru -S btop tldr tmux kmscon neofetch
 ```
+
+
+## CMD
 
 ### zsh配置
 ```
@@ -25,7 +28,7 @@ cd ~/.oh-my-zsh/custom/themes
 git clone -depth 1 https://github.com/romkatv/powerlevel10k
 ```
 
-#### omz国内加速
+### omz国内加速
 ```
 git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
 cd ohmyzsh/tools
@@ -56,13 +59,16 @@ cd ~/.local/share/nvim/lazy/markdown-preview.nvim
 npm install
 ```
 
-### clash-for-linux-install
+## 日常软件
+
+### screenshot
 ```
-git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
-  && cd clash-for-linux-install \
-  && bash install.sh
-clashon
-clashtun on
+sudo pacman -S grim slurp wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
+systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+systemctl --user restart xdg-desktop-portal
+#niri配置
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
+Mod+S { spawn "sh" "-c" "grim -g \"$(slurp)\" - | wl-copy"; }
 ```
 
 ### linuxqq and wechat
@@ -79,7 +85,6 @@ flatpak override --user \
   com.tencent.WeChat
 ```
 
-
 ### coding agent and nvm settings
 ```
 #安装nvm以更好管理版本
@@ -89,6 +94,24 @@ nvm install --lts
 npm install -g @openai/codex
 npm install -g opencode-ai@latest
 npm install -g @anthropic-ai/claude-code
+```
+
+## tools
+
+### clash-for-linux-install
+```
+git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
+  && cd clash-for-linux-install \
+  && bash install.sh
+clashon
+clashtun on
+```
+
+### adb
+```
+sudo pacman -S android-tools android-udev
+sudo usermod -aG adbusers $USER
+sudo udevadm control --reload-rules && sudo systemctl restart systemd-udevd.service
 ```
 
 
