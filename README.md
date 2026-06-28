@@ -13,7 +13,7 @@ paru -S cherry-studio-electron-bin linuxqq wechat clash-verge-rev-bin
 paru -S btop tldr tmux kmscon neofetch
 ```
 
-## zsh配置
+### zsh配置
 ```
 sudo pacman -S zsh
 paru -S autojump-git
@@ -25,7 +25,7 @@ cd ~/.oh-my-zsh/custom/themes
 git clone -depth 1 https://github.com/romkatv/powerlevel10k
 ```
 
-### omz国内加速
+#### omz国内加速
 ```
 git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
 cd ohmyzsh/tools
@@ -37,35 +37,26 @@ cd ~/.oh-my-zsh/custom/themes
 git clone --depth 1 https://gitee.com/romkatv/powerlevel10k.git
 ```
 
-## yazi nvim vscode gemini-cli
+### yazi nvim vscode
 ```
 paru -S yazi neovim visual-studio-code-bin
 sudo pacman -S luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick chafa 
 sudo pacman -S wl-clipboard less bat nodejs npm
 ```
 
-### 启用vim插件
+#### 启用vim-plug
 ```
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-### 修复nvim插件错误
+#### 修复nvim插件错误
 ```
 cd ~/.local/share/nvim/lazy/markdown-preview.nvim
 npm install
 ```
 
-### gemini-cli
-```
-#安装nvm以更好管理版本
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.zshrc
-nvm install --lts
-npm install -g @google/gemini-cli
-```
-
-## clash-for-linux-install
+### clash-for-linux-install
 ```
 git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
   && cd clash-for-linux-install \
@@ -73,6 +64,33 @@ git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelv
 clashon
 clashtun on
 ```
+
+### linuxqq and wechat
+```
+sudo pacman -S flatpak
+flatpak install flathub com.qq.QQ
+flatpak install flathub com.tencent.WeChat
+flatpak install flathub com.github.tchx84.Flatseal
+flatpak override --user \
+  --env=GTK_IM_MODULE=fcitx \
+  --env=QT_IM_MODULE=fcitx \
+  --env=XMODIFIERS=@im=fcitx \
+  --env=QT_QPA_PLATFORM=xcb \
+  com.tencent.WeChat
+```
+
+
+### coding agent and nvm settings
+```
+#安装nvm以更好管理版本
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.zshrc
+nvm install --lts
+npm install -g @openai/codex
+npm install -g opencode-ai@latest
+npm install -g @anthropic-ai/claude-code
+```
+
 
 ## 系统UI
 ```
