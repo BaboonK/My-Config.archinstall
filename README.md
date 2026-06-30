@@ -66,7 +66,10 @@ npm install
 sudo pacman -S grim slurp wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
 systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
 systemctl --user restart xdg-desktop-portal
-#niri配置
+```
+
+配置：`config.kdl`
+```
 spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"
 Mod+S { spawn "sh" "-c" "grim -g \"$(slurp)\" - | wl-copy"; }
 ```
@@ -103,8 +106,7 @@ npm install -g @anthropic-ai/claude-code
 git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
   && cd clash-for-linux-install \
   && bash install.sh
-clashon
-clashtun on
+clashon && clashtun on
 ```
 
 ### adb
@@ -128,13 +130,11 @@ paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
 
 ## file manager
 
-### thunar本体和右键功能
+### thunar本体和基本工具
 ```bash
 sudo pacman -S thunar thunar-archive-plugin thunar-volman \
     tumbler ffmpegthumbnailer exo \
     p7zip unrar unzip zip file-roller lz4 zstd
-#右键终端打开使用kitty
-gsettings set org.cinnamon.desktop.default-applications.terminal exec 'kitty'
 ```
 
 ### 支持
@@ -165,17 +165,33 @@ rm -rf ~/.config/nemo
 
 ### portal 配置（与 niri 集成）
 ```bash
-sudo pacman -S xdg-desktop-portal-gtk xdg-desktop-portal-wlr
 sudo pacman -Rdd xdg-desktop-portal-gnome
+sudo pacman -S xdg-desktop-portal-gtk 
+#sudo pacman -S xdg-desktop-portal-wlr
 xdg-mime default thunar.desktop inode/directory
+```
+
+```
 mkdir -p ~/.config/xdg-desktop-portal
 cat > ~/.config/xdg-desktop-portal/portals.conf << 'EOF'
 [preferred]
+# 默认使用 gtk 后端处理所有请求
 default=gtk
+# 文件夹打开请求明确指向 gtk (它会调用 xdg-open)
 org.freedesktop.impl.portal.FileChooser=gtk
-org.freedesktop.impl.portal.ScreenCast=wlr
-org.freedesktop.impl.portal.Screenshot=wlr
+# 录屏和截图的后端
+#org.freedesktop.impl.portal.ScreenCast=wlr
+#org.freedesktop.impl.portal.Screenshot=wlr
+org.freedesktop.impl.portal.ScreenCast=hyprland
+org.freedesktop.impl.portal.Screenshot=hyprland
 EOF
+```
+
+配置：`~/.config/xfce4/helpers.rc`
+```ini
+TerminalEmulator=kitty
+FileManager=thunar
+WebBrowser=firefox
 ```
 
 
@@ -192,9 +208,9 @@ paru -S fcitx5-im fcitx5-rime rime-ice \
 ```bash
 cp /usr/share/rime-data/rime_ice.dict.yaml ~/.local/share/fcitx5/rime/rime_ice.dict.yaml
 ```
-```
-#~/.local/share/fcitx5/rime/rime_ice.dict.yaml
 
+配置：`~/.local/share/fcitx5/rime/rime_ice.dict.yaml`
+```
 import_tables:
   ...
   ...
@@ -206,9 +222,9 @@ import_tables:
 ```bash
 mkdir ~/.local/share/fcitx5/rime
 ```
-```
-#~/.local/share/fcitx5/rime/default.custom.yaml
 
+配置：`#~/.local/share/fcitx5/rime/default.custom.yaml`
+```
 patch:
   # 仅使用「雾凇拼音」的默认配置，配置此行即可
   __include: rime_ice_suggestion:/
@@ -273,9 +289,9 @@ paru -S sddm-lain-wired-theme
 sudo mkdir /etc/sddm.conf.d
 sudo cp -p /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/sddm.conf
 ```
-```
-#/etc/sddm.conf.d/sddm.conf
 
+配置：`#/etc/sddm.conf.d/sddm.conf`
+```
 GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=2,QT_FONT_DPI=192
 Current=sddm-lain-wired-theme
 ```
