@@ -118,8 +118,7 @@ sudo udevadm control --reload-rules && sudo systemctl restart systemd-udevd.serv
 ## 系统UI
 ```
 paru -S noctalia-shell \
-    cliphist matugen cava wlsunset power-profiles-daemon \
-    vicinae-bin
+    cliphist matugen cava wlsunset power-profiles-daemon
 systemctl enable --now --user vicinae.service
 ```
 ### gtk主题设置
