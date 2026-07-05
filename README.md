@@ -1,16 +1,17 @@
 # archinstall安装系统
 
-
 ## 基本配置
 ```bash
-sudo pacman -S base-devel git curl \
-    noto-fonts-cjk noto-fonts-emoji ttf-hack-nerd ttf-roboto \
-    firefox firefoxpwa kitty mosh polkit-gnome gnome-keyring
+sudo pacman -S base-devel git curl mosh \
+noto-fonts-cjk noto-fonts-emoji ttf-hack-nerd ttf-roboto \
+firefox firefoxpwa kitty polkit-gnome gnome-keyring
 
+# paru
 git clone https://aur.archlinux.org/paru.git
 cd paru && makepkg -si
 paru -S cherry-studio-electron-bin clash-verge-rev-bin
-paru -S btop tldr tmux kmscon neofetch
+paru -S bat less tldr tmux kmscon \
+btop neofetch
 ```
 
 
@@ -21,45 +22,150 @@ paru -S btop tldr tmux kmscon neofetch
 sudo pacman -S zsh
 paru -S autojump-git
 
-#网络通畅
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+
 cd ~/.oh-my-zsh/plugins
 git clone -depth 1 https://github.com/zsh-users/zsh-autosuggestions
 git clone -depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
+
 cd ~/.oh-my-zsh/custom/themes
 git clone -depth 1 https://github.com/romkatv/powerlevel10k
-
-#国内加速
+```
+```bash
+# 使用国内源
 git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
 cd ohmyzsh/tools
 REMOTE=https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git sh install.sh
+
 cd ~/.oh-my-zsh/plugins
 git clone --depth 1 https://gitee.com/mirrors/zsh-autosuggestions.git
 git clone --depth 1 https://gitee.com/mirrors/zsh-syntax-highlighting.git
+
 cd ~/.oh-my-zsh/custom/themes
 git clone --depth 1 https://gitee.com/romkatv/powerlevel10k.git
 ```
 
-### yazi nvim vscode
+### nodejs npm nvm
+```bash
+sudo pacman -S nodejs npm
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.zshrc
+
+nvm install --lts
+```
+
+### yazi, nvim, vscode and coding agent
 ```bash
 paru -S yazi neovim visual-studio-code-bin
-sudo pacman -S luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick chafa 
-sudo pacman -S wl-clipboard less bat nodejs npm
+sudo pacman -S luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick chafa wl-clipboard
+
+npm install -g @openai/codex
+npm install -g opencode-ai@latest
+npm install -g @anthropic-ai/claude-code
 ```
 
-#### 启用vim-plug
-```bash
+```
+# 启用vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-```
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-#### 修复nvim插件错误
-```bash
+# 修复nvim插件错误
 cd ~/.local/share/nvim/lazy/markdown-preview.nvim
 npm install
 ```
 
-## 日常软件
+
+## system settings
+
+### UI
+```bash
+paru -S noctalia-git \
+cliphist matugen cava wlsunset power-profiles-daemon
+
+sudo pacman -S nwg-look
+paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
+```
+
+### file manager
+
+#### thunar本体和基本工具
+```bash
+sudo pacman -S thunar thunar-archive-plugin thunar-volman \
+tumbler ffmpegthumbnailer exo \
+p7zip unrar unzip zip file-roller lz4 zstd
+```
+
+#### 支持
+```bash
+# 设备管理与虚拟文件系统
+sudo pacman -S udisks2 \
+gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-goa
+
+# 文件系统支持
+sudo pacman -S ntfs-3g exfatprogs f2fs-tools dosfstools 
+
+# 加密与凭据管理
+sudo pacman -S gnome-keyring gcr
+
+# nfs与smb访问
+sudo pacman -S gvfs-nfs gvfs-smb smbclient nss-mdns avahi
+sudo systemctl enable --now avahi-daemon.service
+```
+
+#### 移除nautilus/nemo
+```bash
+sudo pacman -Rss nautilus
+rm -rf ~/.config/nautilus
+
+sudo pacman -Rsn nemo nemo-fileroller nemo-preview \
+cinnamon-translations cinnamon-desktop xapp exempi
+rm -rf ~/.config/nemo
+```
+
+#### 设置为默认软件
+```bash
+sudo pacman -Rdd xdg-desktop-portal-gnome
+sudo pacman -S xdg-desktop-portal-gtk 
+#sudo pacman -S xdg-desktop-portal-wlr
+
+xdg-mime default thunar.desktop inode/directory
+xdg-mime default firefox.desktop x-scheme-handler/http
+xdg-mime default firefox.desktop x-scheme-handler/https
+xdg-mime default firefox.desktop text/html
+xdg-settings set default-web-browser firefox.desktop
+```
+配置：`~/.config/xfce4/helpers.rc`
+```ini
+TerminalEmulator=kitty
+FileManager=thunar
+WebBrowser=firefox
+```
+```
+mkdir -p ~/.config/xdg-desktop-portal
+cat > ~/.config/xdg-desktop-portal/portals.conf << 'EOF'
+[preferred]
+# 默认使用 gtk 后端处理所有请求
+default=gtk
+# 文件夹打开请求明确指向 gtk (它会调用 xdg-open)
+org.freedesktop.impl.portal.FileChooser=gtk
+# 录屏和截图的后端
+#org.freedesktop.impl.portal.ScreenCast=wlr
+#org.freedesktop.impl.portal.Screenshot=wlr
+org.freedesktop.impl.portal.ScreenCast=hyprland
+org.freedesktop.impl.portal.Screenshot=hyprland
+EOF
+```
+
+配置：`~/.config/xfce4/helpers.rc`
+```ini
+TerminalEmulator=kitty
+FileManager=thunar
+WebBrowser=firefox
+```
+
+
+## 日常软件工具
 
 ### screenshot
 ```bash
@@ -88,19 +194,6 @@ flatpak override --user \
   com.tencent.WeChat
 ```
 
-### coding agent and nvm settings
-```bash
-#安装nvm以更好管理版本
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source ~/.zshrc
-nvm install --lts
-npm install -g @openai/codex
-npm install -g opencode-ai@latest
-npm install -g @anthropic-ai/claude-code
-```
-
-## tools
-
 ### clash-for-linux-install
 ```bash
 git clone --branch master --depth 1 https://gh-proxy.org/https://github.com/nelvko/clash-for-linux-install.git \
@@ -114,84 +207,6 @@ clashon && clashtun on
 sudo pacman -S android-tools android-udev
 sudo usermod -aG adbusers $USER
 sudo udevadm control --reload-rules && sudo systemctl restart systemd-udevd.service
-```
-
-
-## UI
-```bash
-paru -S noctalia-git \
-    cliphist matugen cava wlsunset power-profiles-daemon
-```
-### gtk themes
-```bash
-sudo pacman -S nwg-look
-paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
-```
-
-## file manager
-
-### thunar本体和基本工具
-```bash
-sudo pacman -S thunar thunar-archive-plugin thunar-volman \
-    tumbler ffmpegthumbnailer exo \
-    p7zip unrar unzip zip file-roller lz4 zstd
-```
-
-### 支持
-```bash
-#设备管理与虚拟文件系统
-sudo pacman -S udisks2 \
-    gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-goa
-
-#文件系统支持
-sudo pacman -S ntfs-3g exfatprogs f2fs-tools dosfstools 
-
-#加密与凭据管理
-sudo pacman -S gnome-keyring gcr
-
-#nfs与smb访问
-sudo pacman -S gvfs-nfs gvfs-smb smbclient nss-mdns avahi
-sudo systemctl enable --now avahi-daemon.service
-```
-
-### 移除nautilus/nemo
-```bash
-sudo pacman -Rss nautilus
-rm -rf ~/.config/nautilus
-sudo pacman -Rsn nemo nemo-fileroller nemo-preview \
-    cinnamon-translations cinnamon-desktop xapp exempi
-rm -rf ~/.config/nemo
-```
-
-### portal 配置（与 niri 集成）
-```bash
-sudo pacman -Rdd xdg-desktop-portal-gnome
-sudo pacman -S xdg-desktop-portal-gtk 
-#sudo pacman -S xdg-desktop-portal-wlr
-xdg-mime default thunar.desktop inode/directory
-```
-
-```
-mkdir -p ~/.config/xdg-desktop-portal
-cat > ~/.config/xdg-desktop-portal/portals.conf << 'EOF'
-[preferred]
-# 默认使用 gtk 后端处理所有请求
-default=gtk
-# 文件夹打开请求明确指向 gtk (它会调用 xdg-open)
-org.freedesktop.impl.portal.FileChooser=gtk
-# 录屏和截图的后端
-#org.freedesktop.impl.portal.ScreenCast=wlr
-#org.freedesktop.impl.portal.Screenshot=wlr
-org.freedesktop.impl.portal.ScreenCast=hyprland
-org.freedesktop.impl.portal.Screenshot=hyprland
-EOF
-```
-
-配置：`~/.config/xfce4/helpers.rc`
-```ini
-TerminalEmulator=kitty
-FileManager=thunar
-WebBrowser=firefox
 ```
 
 
@@ -242,15 +257,11 @@ patch:
 ```
 
 
-## office
-```bash
-sudo pacman -S libreoffice-still libreoffice-still-zh-cn
-```
-
 ## 多媒体
 ```bash
 paru -S imv mpv ani-cli
 ```
+
 
 ## N卡闪屏问题
 ```bash
@@ -259,17 +270,22 @@ paru -S imv mpv ani-cli
 #修改 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet nvidia.NVreg_PowerMizerMode=1"
 ```
 
-## 系统引导
+
+## bootloader
 
 ### 多系统引导
 ```
 sudo pacman -S os-prober
+```
 
-#/etc/default/grub配置
+/etc/default/grub配置
+```
 GRUB_DEFAULT=saved
 GRUB_TIMEOUT=10
 GRUB_SAVEDEFAULT=true
+```
 
+```
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
@@ -301,35 +317,3 @@ Current=sddm-lain-wired-theme
 paru -S shim-signed
 sudo pacman -S sbsigntools mokutil
 ```
-
-## chromebook声卡
-```bash
-git clone https://github.com/WeirdTreeThing/chromebook-linux-audio.git
-cd chromebook-linux-audio
-./setup-audio
-sudo pacman -S pavucontrol
-```
-
-## linux-surface
-
-### linux-surface内核
-```
-https://github.com/linux-surface/linux-surface/wiki/Installation-and-Setup#Arch
-
-curl -s https://raw.githubusercontent.com/linux-surface/linux-surface/master/pkg/keys/surface.asc \
-    | sudo pacman-key --add -
-
-sudo pacman-key --finger 56C464BAAC421453
-sudo pacman-key --lsign-key 56C464BAAC421453
-
-sudo -e /etc/pacman.conf
-[linux-surface]
-Server = https://pkg.surfacelinux.com/arch/
-
-sudo pacman -Syu
-
-sudo pacman -S linux-surface linux-surface-headers iptsd
-```
-
-### surface的安全启动
-
