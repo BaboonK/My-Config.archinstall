@@ -28,7 +28,52 @@ InhibitDelayMaxSec=1s                  # NetworkManager 等 inhibitor 最大延�
 
 > 建议重启一次系统
 
-### 3. surface-control 电源优化（d3cold 子命令已废）
+### 3. niri 下 suspend 睡死（已定位并修复）
+
+现象：Hyprland 下 suspend/resume 正常；niri 下合盖或电源键 suspend 后可能连续再次进入 suspend，最终表现为“睡死”。
+
+关键日志：
+
+```bash
+journalctl -b -1 -u systemd-suspend.service --no-pager
+journalctl -b -1 --grep='suspend requested|laptop lid|niri|PM: suspend|PM: suspend exit' --no-pager
+```
+
+曾出现：
+
+```text
+niri: laptop lid opened
+niri: laptop lid closed
+niri: laptop lid opened
+systemd-logind: suspend requested from client PID ... ('niri')
+niri::backend::tty: error suspending: error suspending
+```
+
+判断：恢复后 Surface lid 事件有 opened/closed 抖动；同时 niri 默认会接管电源键并向 logind 请求 suspend，而 `/etc/systemd/logind.conf` 也在处理电源键/合盖 suspend。两个 suspend 入口叠加后，niri 恢复时被反复触发 suspend。
+
+修复：让 suspend 只由 `systemd-logind` 负责，禁用 niri 的电源键接管。
+
+`~/.config/niri/config.kdl`：
+
+```kdl
+input {
+    // Let systemd-logind handle power/lid suspend to avoid duplicate suspend
+    // requests from niri on Surface lid-event bounce after resume.
+    disable-power-key-handling
+
+    ...
+}
+```
+
+验证配置：
+
+```bash
+niri validate -c ~/.config/niri/config.kdl
+```
+
+验证预期：重登 niri 后测试 suspend；日志中不应再出现 `suspend requested from client PID ... ('niri')`。如果仍有连续 suspend，可将 `HoldoffTimeoutSec=1s` 调回更保守的 `5s` 或 `10s`。
+
+### 4. surface-control 电源优化（d3cold 子命令已废）
 
 > **重要订正**：`surface-control` v0.5.0 已移除 `d3cold` 子命令，下列旧命令会报错。
 
@@ -48,7 +93,7 @@ powerprofilesctl set power-saver
 
 注：surface-control 包名是 `surface-control`，但二进制可执行文件在 `/usr/bin/surface`
 
-### 4. 已知限制
+### 5. 已知限制
 
 - Surface 仅支持 s2idle（S0ix Modern Standby），不支持 S3 deep sleep
 - 键盘（Surface Keyboard，非 USB 连接）在 s2idle 下不支持唤醒，需开盖或按电源键唤醒
@@ -108,4 +153,3 @@ sudo systemctl restart systemd-logind
 - btrfs + swapfile + hibernate 内核 6.x 已支持
 - swapfile 必须在单一 device、无压缩、无快照干扰（`mkswapfile` 自动处理）
 - 仍只有 s2idle（Modern Standby），hibernate 是 disk state（S4 到 swapfile），与 S3 deep 不同
-- 需要 33G 可用空间（当前有 32.4G，可能需要清理快照）

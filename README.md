@@ -143,17 +143,12 @@ WebBrowser=firefox
 ```
 ```
 mkdir -p ~/.config/xdg-desktop-portal
-cat > ~/.config/xdg-desktop-portal/portals.conf << 'EOF'
+cat > ~/.config/xdg-desktop-portal/niri-portals.conf << 'EOF'
 [preferred]
-# 默认使用 gtk 后端处理所有请求
 default=gtk
-# 文件夹打开请求明确指向 gtk (它会调用 xdg-open)
 org.freedesktop.impl.portal.FileChooser=gtk
-# 录屏和截图的后端
-#org.freedesktop.impl.portal.ScreenCast=wlr
-#org.freedesktop.impl.portal.Screenshot=wlr
-org.freedesktop.impl.portal.ScreenCast=hyprland
-org.freedesktop.impl.portal.Screenshot=hyprland
+org.freedesktop.impl.portal.ScreenCast=wlr
+org.freedesktop.impl.portal.Screenshot=wlr
 EOF
 ```
 
