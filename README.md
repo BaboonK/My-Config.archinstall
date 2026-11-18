@@ -164,6 +164,11 @@ WebBrowser=firefox
 
 ## 日常软件工具
 
+### steam
+```bash
+sudo pacman -Syu steam mesa lib32-mesa vulkan-radeon lib32-vulkan-radeon
+```
+
 ### screenshot
 ```bash
 sudo pacman -S grim slurp wl-clipboard xdg-desktop-portal xdg-desktop-portal-gtk xdg-desktop-portal-wlr
@@ -311,7 +316,7 @@ GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=2,QT_FONT_DPI=192
 Current=sddm-lain-wired-theme
 ```
 
-### grub 安全启动
+## 安全启动
 ```bash
 paru -S shim-signed
 sudo pacman -S sbsigntools mokutil
