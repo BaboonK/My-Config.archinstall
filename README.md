@@ -18,6 +18,16 @@ luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick cha
 
 ## CMD
 
+### git
+```bash
+git config --global user.name "你的名字"
+git config --global user.email "你的邮箱"
+git config --global init.defaultBranch main
+ssh -T -p 443 git@ssh.github.com
+git config core.sshCommand "ssh -o Hostname=ssh.github.com -p 443"
+```
+
+
 ### oh-my-zsh
 ```bash
 sudo pacman -S zsh
