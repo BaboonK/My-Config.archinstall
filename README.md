@@ -2,16 +2,17 @@
 
 ## 基本配置
 ```bash
-sudo pacman -S base-devel git curl mosh \
-noto-fonts-cjk noto-fonts-emoji ttf-hack-nerd ttf-roboto \
-firefox firefoxpwa kitty polkit-gnome gnome-keyring
+sudo pacman -S fcitx5-im fcitx5-rime firefox firefoxpwa kitty kmscon \
+noto-fonts-emoji noto-fonts-cjk ttf-hack-nerd ttf-roboto \
+base-devel git curl mosh \
+bat btop less tmux fastfetch \
+polkit-gnome gnome-keyring tldr
 
 # paru
 git clone https://aur.archlinux.org/paru.git
 cd paru && makepkg -si
-paru -S cherry-studio-electron-bin clash-verge-rev-bin
-paru -S bat less tldr tmux kmscon \
-btop neofetch
+paru -S clash-verge-rev-bin yazi neovim \
+luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick chafa wl-clipboard
 ```
 
 
@@ -24,22 +25,14 @@ paru -S autojump-git
 
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
-cd ~/.oh-my-zsh/plugins
-git clone -depth 1 https://github.com/zsh-users/zsh-autosuggestions
-git clone -depth 1 https://github.com/zsh-users/zsh-syntax-highlighting
-
 cd ~/.oh-my-zsh/custom/themes
-git clone -depth 1 https://github.com/romkatv/powerlevel10k
+git clone --depth 1 https://github.com/romkatv/powerlevel10k
 ```
 ```bash
 # 使用国内源
 git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
 cd ohmyzsh/tools
 REMOTE=https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git sh install.sh
-
-cd ~/.oh-my-zsh/plugins
-git clone --depth 1 https://gitee.com/mirrors/zsh-autosuggestions.git
-git clone --depth 1 https://gitee.com/mirrors/zsh-syntax-highlighting.git
 
 cd ~/.oh-my-zsh/custom/themes
 git clone --depth 1 https://gitee.com/romkatv/powerlevel10k.git
@@ -55,10 +48,9 @@ source ~/.zshrc
 nvm install --lts
 ```
 
-### yazi, nvim, vscode and coding agent
+### ide and coding agent
 ```bash
-paru -S yazi neovim visual-studio-code-bin
-sudo pacman -S luarocks ueberzugpp fd ripgrep ffmpeg 7zip jq poppler fzf zoxide imagemagick chafa wl-clipboard
+paru -S visual-studio-code-bin curosr-bin
 
 npm install -g @openai/codex
 npm install -g opencode-ai@latest
@@ -254,7 +246,7 @@ patch:
 
 ## 多媒体
 ```bash
-paru -S imv mpv ani-cli
+paru -S imv mpv vlc ani-cli
 ```
 
 
