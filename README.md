@@ -270,12 +270,12 @@ paru -S imv mpv vlc ani-cli
 
 ## bootloader
 
-### 多系统引导
+### os-prober
 ```
 sudo pacman -S os-prober
 ```
 
-/etc/default/grub
+### grub prefix
 ```
 GRUB_DEFAULT=saved
 GRUB_TIMEOUT=10
@@ -283,7 +283,7 @@ GRUB_SAVEDEFAULT=true
 GRUB_DISABLE_OS_PROBER=false
 ```
 
-grub.cfg
+### grub.cfg
 ```
 sudo ln -s /boot/efi/grub /boot/grub
 sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -305,7 +305,7 @@ sudo mkdir /etc/sddm.conf.d
 sudo cp -p /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/sddm.conf
 ```
 
-/etc/sddm.conf.d/sddm.conf
+### /etc/sddm.conf.d/sddm.conf
 ```
 GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=2,QT_FONT_DPI=192
 Current=sddm-lain-wired-theme
