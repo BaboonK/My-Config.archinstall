@@ -24,22 +24,20 @@ git config --global user.name "你的名字"
 git config --global user.email "你的邮箱"
 git config --global init.defaultBranch main
 ssh -T -p 443 git@ssh.github.com
-git config core.sshCommand "ssh -o Hostname=ssh.github.com -p 443"
 ```
-
 
 ### oh-my-zsh
 ```bash
 sudo pacman -S zsh
 paru -S autojump-git
-
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 cd ~/.oh-my-zsh/custom/themes
 git clone --depth 1 https://github.com/romkatv/powerlevel10k
 ```
+
+#### 使用国内源
 ```bash
-# 使用国内源
 git clone --depth 1 https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git
 cd ohmyzsh/tools
 REMOTE=https://mirrors.tuna.tsinghua.edu.cn/git/ohmyzsh.git sh install.sh
@@ -51,10 +49,8 @@ git clone --depth 1 https://gitee.com/romkatv/powerlevel10k.git
 ### nodejs npm nvm
 ```bash
 sudo pacman -S nodejs npm
-
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source ~/.zshrc
-
 nvm install --lts
 ```
 
@@ -67,27 +63,76 @@ npm install -g opencode-ai@latest
 npm install -g @anthropic-ai/claude-code
 ```
 
+### vim
 ```
 # 启用vim-plug
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# 修复nvim插件错误
-cd ~/.local/share/nvim/lazy/markdown-preview.nvim
-npm install
 ```
 
 
 ## system settings
 
 ### UI
-```bash
-paru -S noctalia \
-cliphist matugen cava wlsunset power-profiles-daemon
 
-sudo pacman -S nwg-look
-paru -S colloid-gtk-theme-git colloid-icon-theme-git colloid-cursors-git
+| 类型    | 主题名称                       |
+| ----- | -------------------------- |
+| GTK   | `Colloid-Red-Dark-Compact` |
+| Icons | `Colloid-Dark`             |
+| Mouse | `Colloid-dark-cursors`     |
+
+
+```bash
+paru -S noctalia nwg-look \
+cliphist matugen cava wlsunset power-profiles-daemon
 ```
+
+#### 安装 GTK
+
+```
+git clone --depth=1 \
+  https://github.com/vinceliuice/Colloid-gtk-theme.git
+
+# 安装 GTK
+cd Colloid-gtk-theme
+./install.sh -t red -c dark -s compact
+```
+
+#### 安装 Icons + Mouse
+
+```
+git clone --depth=1 \
+  https://github.com/vinceliuice/Colloid-icon-theme.git
+
+# 安装图标
+cd Colloid-icon-theme
+./install.sh -t default
+
+# 安装鼠标主题
+cd Colloid-icon-theme/cursors
+./install.sh
+```
+
+#### 卸载
+
+```
+# 卸载全部 Colloid GTK 变体
+cd ~/Colloid-gtk-theme
+./install.sh --remove
+
+# 卸载全部 Colloid Icons 变体
+cd ~/Colloid-icon-theme
+./install.sh --remove
+
+# GTK
+rm -rf ~/.themes/Colloid-Red-Dark-Compact
+
+# Icons && Mouse
+rm -rf ~/.local/share/icons/Colloid*
+```
+
+
+
 
 ### file manager
 
@@ -126,6 +171,10 @@ rm -rf ~/.config/nemo
 ```
 
 #### 设置为默认软件
+
+hyprpolkitagent
+
+
 ```bash
 sudo pacman -Rdd xdg-desktop-portal-gnome
 sudo pacman -S xdg-desktop-portal-gtk 
