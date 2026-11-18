@@ -82,7 +82,7 @@ npm install
 
 ### UI
 ```bash
-paru -S noctalia-git \
+paru -S noctalia \
 cliphist matugen cava wlsunset power-profiles-daemon
 
 sudo pacman -S nwg-look
@@ -275,20 +275,22 @@ paru -S imv mpv vlc ani-cli
 sudo pacman -S os-prober
 ```
 
-/etc/default/grub配置
+/etc/default/grub
 ```
 GRUB_DEFAULT=saved
 GRUB_TIMEOUT=10
 GRUB_SAVEDEFAULT=true
+GRUB_DISABLE_OS_PROBER=false
 ```
 
+grub.cfg
 ```
+sudo ln -s /boot/efi/grub /boot/grub
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 ```
 
 ### grub 主题
 ```bash
-paru -S grub-theme-lain
 git clone https://github.com/uiriansan/LainGrubTheme.git
 cd LainGrubTheme
 sudo ./install.sh
@@ -303,7 +305,7 @@ sudo mkdir /etc/sddm.conf.d
 sudo cp -p /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/sddm.conf
 ```
 
-配置：`#/etc/sddm.conf.d/sddm.conf`
+/etc/sddm.conf.d/sddm.conf
 ```
 GreeterEnvironment=QT_SCREEN_SCALE_FACTORS=2,QT_FONT_DPI=192
 Current=sddm-lain-wired-theme
